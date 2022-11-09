@@ -1,0 +1,74 @@
+create database 246_insurance;
+use 246_insurance;
+create table person
+(driver_id varchar(25),
+name varchar(20),
+address varchar(25),
+primary key(driver_id));
+
+create table car
+(reg_no varchar(10),
+model varchar(10),
+year char(4),
+primary key(reg_no));
+
+create table owns
+(
+reg_no varchar(10),
+driver_id varchar(25),
+foreign key(driver_id) references person(driver_id),
+foreign key(reg_no) references car(reg_no));
+
+create table accident 
+(report_no int,
+accident_date char(15),
+location varchar(20),
+primary key(report_no));
+
+create table participated
+(
+driver_id varchar(25),
+reg_no varchar(10),
+report_no int,
+damage_amount varchar(6),
+primary key(driver_id, reg_no, report_no),
+foreign key(driver_id) references person(driver_id) on delete cascade,
+foreign key(reg_no) references car(reg_no) on delete cascade,
+foreign key(report_no) references accident(report_no) on delete cascade);
+
+insert into person values('A01','Richard','Srinivas nagar'),
+('A02', 'Pradeep', 'Rajaji Nagar'),
+('AO3', 'Smith', 'Ashok nagar'),
+('A04', 'Venu', 'N R Colony'),
+('A05', 'Jhon', 'Hanumanth Nagar');
+
+
+insert into car values('KA052250', 'Indica', '1990'),
+('KA031181', 'Lancer', '1957'),
+('KA095477', 'Toyota', '1998'),
+('KA053408', 'Honda', '2008'),
+('KA041702', 'Audi', '2005');
+
+SET FOREIGN_KEY_CHECKS=0;
+SET GLOBAL FOREIGN_KEY_CHECKS=0; 
+insert into owns values ('A01', 'KA052250'),
+('A02', 'KA053408'),
+('A03', 'KA031181'),
+('A04', 'KA095477'),
+('A05', 'KA041702');
+
+insert into accident values(11, '01-JAN-03', 'Mysore Road'),
+(12, '02-FEB-04', 'South end Circle'),
+(13, '21-JAN-03', 'Bull temple Road'),
+(14, '17-FEB-08', 'Mysore Road'),
+(15, '04-MAR-05', 'Kanakpura Road');
+
+insert into participated values('A01', 'KA052250', 11, '10000'),
+('A02', 'KA053408', 12, '50000'),
+('A03', 'KA095477', 13, '25000'),
+('A04', 'KA031181', 14, '3000'),
+('A05', 'KA041702', 15, '5000');
+
+select accident_date, location from accident;
+select driver_id from participated
+where damage_amount>='25000';
