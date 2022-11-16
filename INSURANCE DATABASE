@@ -74,3 +74,20 @@ where damage_amount>='25000';
 select * from participated order by damage_amount desc;
 
 select avg(damage_amount) from participated;
+
+select * from car order by year;
+
+select count(*)
+from car c, participated p
+where c.reg_no=p.reg_no and c.model='Lancer';
+
+select count(distinct driver_id) CNT
+from participated a, accident b
+where a.report_no=b.report_no and b.accident_date like '%08';
+
+insert into accident values(16, '04-MAR-21', 'America'),(17, '08-APR-21', 'Australia');
+select count(*) from accident
+where accident_date like '%21';
+
+delete from participated
+where damage_amount < (select t.damage_amount from (select avg(damage_amount) as damage_amount from participated) t);
